@@ -1,0 +1,14 @@
+# database username
+username=<str>
+
+# database password
+password=<str>
+
+# database name
+database=<str>
+
+# database port
+port=<int>
+
+#database host (localhot)
+host=<str>
