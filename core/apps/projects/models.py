@@ -64,3 +64,11 @@ class Projects(db.Model):
             setattr(self, key, item)
         db.session.commit()
         return self
+
+    def delete(self):
+        """
+        Deletes the objects.
+        """
+        db.session.delete(self)
+        db.session.commit()
+        return None

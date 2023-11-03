@@ -5,7 +5,7 @@ from marshmallow import ValidationError
 
 from .models import Projects
 from .schemas import ProjectSchema, _project_schema, ProjectUpdateSchema
-from ...constants import CONTENT_NOT_FOUND_MESSAGE
+from ...constants import CONTENT_NOT_FOUND_MESSAGE, DELETE_SUCCESSFUL_MESSAGE
 
 project_schema = ProjectSchema()
 project_response_schema = ProjectSchema(load_only=('created_at',))
@@ -125,6 +125,20 @@ class ProjectServices:
                 return make_response({'data': json_response, 'message': 'Project updated successfully.'}, HTTPStatus.OK)
 
             return make_response({'message': data_or_errors}, HTTPStatus.BAD_REQUEST)
+
+        return make_response({'message': CONTENT_NOT_FOUND_MESSAGE}, HTTPStatus.NOT_FOUND)
+
+    def delete(self, id):
+        """
+        Calls the model's delete method.
+        Parameter
+            id: id of the project
+        Return
+            JSON Response, HTTP status code
+        """
+        if project := Projects.get_by_id(id):
+            project.delete()
+            return make_response({'message': DELETE_SUCCESSFUL_MESSAGE}, HTTPStatus.NO_CONTENT)
 
         return make_response({'message': CONTENT_NOT_FOUND_MESSAGE}, HTTPStatus.NOT_FOUND)
 

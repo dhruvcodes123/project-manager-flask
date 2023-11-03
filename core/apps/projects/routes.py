@@ -49,5 +49,15 @@ class CreateProject(Resource):
         """
         return cls.register_service.update(id)
 
+    @classmethod
+    def delete(cls, id=None):
+        """
+        This is called when request method is delete.
+        Parameter:
+            id: id of project
+        Return
+        """
+        return cls.register_service.delete(id)
+
 
 projects_api.add_resource(CreateProject, '/project', '/project/<int:id>')
