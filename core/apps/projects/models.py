@@ -50,3 +50,17 @@ class Projects(db.Model):
         model object or None.
         """
         return cls.query.filter_by(id=project_id).first()
+
+    def update(self, data):
+        """
+        Used for partially updating the object.
+        Parameter:
+            data: Python Dictionary
+            key refers to the attribute to be updated.
+        Return
+            model object
+        """
+        for key, item in data.items():
+            setattr(self, key, item)
+        db.session.commit()
+        return self

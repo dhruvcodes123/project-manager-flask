@@ -16,7 +16,7 @@ class ProjectSchema(marshmallow.SQLAlchemyAutoSchema):
 class SubProjectResponseSchema(marshmallow.SQLAlchemyAutoSchema):
     """
     Serializer for the Project model.
-    Used for serializing the children attribute of parent tasks.
+    Used for serializing the children attribute of parent projects.
     """
 
     class Meta:
@@ -37,4 +37,10 @@ class ProjectFilterSchema(marshmallow.SQLAlchemyAutoSchema):
     children = fields.Nested(SubProjectResponseSchema, many=True)
 
 
-_task_schema = ProjectFilterSchema()
+class ProjectUpdateSchema(marshmallow.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Projects
+        fields = ['title', 'description', "completed"]
+
+
+_project_schema = ProjectFilterSchema()
