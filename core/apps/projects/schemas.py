@@ -1,2 +1,11 @@
-# schemas.py
-# The request and response schemas for this Flask application APIs will be defined here.
+from core import marshmallow
+from .models import Projects
+
+
+class ProjectSchema(marshmallow.SQLAlchemyAutoSchema):
+    """
+    Serializer for the projects model.
+    """
+
+    class Meta:
+        model = Projects

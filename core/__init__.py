@@ -18,4 +18,8 @@ def create_app(config_class=Config):
     marshmallow.init_app(app=app)
 
     with app.app_context():
+        from core.apps.projects.routes import projects_blueprint
+
+        app.register_blueprint(projects_blueprint)
+
         return app
