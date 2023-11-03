@@ -27,3 +27,26 @@ class Projects(db.Model):
         db.session.add(project)
         db.session.commit()
         return project
+
+    @classmethod
+    def get(cls):
+        """
+        This method fetches Projects List.
+        Return
+        ------
+        tuple of model objects.
+        """
+        return cls.query.all()
+
+    @classmethod
+    def get_by_id(cls, project_id):
+        """
+        This method fetch project by id.
+        Parameter
+        ---------
+        id: id of projectList
+        return
+        ------
+        model object or None.
+        """
+        return cls.query.filter_by(id=project_id).first()

@@ -4,7 +4,8 @@ from flask import make_response
 from marshmallow import ValidationError
 
 from .models import Projects
-from .schemas import ProjectSchema
+from .schemas import ProjectSchema, _task_schema
+from ...constants import CONTENT_NOT_FOUND_MESSAGE
 
 project_schema = ProjectSchema()
 project_response_schema = ProjectSchema(load_only=('created_at',))
@@ -71,6 +72,39 @@ class ProjectServices:
                                   'message': 'Project created successfully.'}, HTTPStatus.CREATED)
 
         return make_response(data_or_errors, HTTPStatus.BAD_REQUEST)
+
+    def get(self):
+        """
+        Calls the model get method and Serializes in required formate response.
+        Return:
+            JSON Response, HTTP status code
+        """
+        values = self.request.args.to_dict()
+        try:
+            data = Projects.get()
+            print(data)
+        except KeyError as e:
+            return make_response({"error": f'Invalid field {e}'}, HTTPStatus.BAD_REQUEST)
+        except ValidationError as e:
+            return make_response(e.messages, HTTPStatus.BAD_REQUEST)
+        return make_response({'data': _task_schema.dump(data, many=True), 'message': 'Projects fetched successfully.'},
+                             HTTPStatus.OK)
+
+    def get_by_id(self, id):
+        """
+        Calls the model get_by_id method and Serializes in required formate response.
+        Parameter
+        ---------
+        id: id of the task
+        Return
+        ------
+        JSON Response, HTTP status code
+        """
+        data = Projects.get_by_id(id)
+        if not data:
+            return make_response(CONTENT_NOT_FOUND_MESSAGE, HTTPStatus.NOT_FOUND)
+        json_response = _serializer.dump(data, project_response_schema)
+        return make_response({'data': json_response, 'message': 'Project fetched successfully.'}, HTTPStatus.OK)
 
 
 _serializer = Serializer()

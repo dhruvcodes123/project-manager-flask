@@ -28,5 +28,16 @@ class CreateProject(Resource):
         """
         return cls.register_service.create()
 
+    @classmethod
+    def get(cls, id=None):
+        """
+        Handle the HTTP GET request to view projects.
+        Parameter:
+            id: id of task
+        Return:
+            JSON serializable data
+        """
+        return cls.register_service.get() if id is None else cls.register_service.get_by_id(id)
 
-projects_api.add_resource(CreateProject, '/create-project')
+
+projects_api.add_resource(CreateProject, '/project', '/project/<int:id>')
